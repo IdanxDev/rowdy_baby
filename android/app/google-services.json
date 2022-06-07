@@ -1,0 +1,92 @@
+{
+  "project_info": {
+    "project_number": "966166200902",
+    "project_id": "rowdy-baby-2-0",
+    "storage_bucket": "rowdy-baby-2-0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:966166200902:android:ea4cfa0c2f96338a580047",
+        "android_client_info": {
+          "package_name": "com.example.login_demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "966166200902-dc36bm52mmkgl2o3mirb45ji0v2g582p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.login_demo",
+            "certificate_hash": "9af4545685cffc6e585ad01563011cb7cc47556c"
+          }
+        },
+        {
+          "client_id": "966166200902-8olecn7ces1pq4e6vq421jikgf34lft3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbITkEUmmT7Yx1T2RVnTS1ILlPtlU0kjM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "966166200902-8olecn7ces1pq4e6vq421jikgf34lft3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:966166200902:android:6d3b65b026a6ec4e580047",
+        "android_client_info": {
+          "package_name": "com.js.dating"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "966166200902-045adpptitlhmrbtq706b3bsddop49oc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.js.dating",
+            "certificate_hash": "48f1c7230695bd4092d95516c8276f9dc9336809"
+          }
+        },
+        {
+          "client_id": "966166200902-bk39dm2hlivha5c099khgdae1rs8hl0v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.js.dating",
+            "certificate_hash": "d43a9fabaef1df29333dd744a8ec0e7670527876"
+          }
+        },
+        {
+          "client_id": "966166200902-8olecn7ces1pq4e6vq421jikgf34lft3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbITkEUmmT7Yx1T2RVnTS1ILlPtlU0kjM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "966166200902-8olecn7ces1pq4e6vq421jikgf34lft3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

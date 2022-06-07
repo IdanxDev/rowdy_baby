@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="23.121" height="19.653" viewBox="0 0 23.121 19.653">
+  <g id="smoking" transform="translate(0 -32)">
+    <g id="Group_35572" data-name="Group 35572" transform="translate(0 32)">
+      <g id="Group_35571" data-name="Group 35571" transform="translate(0 0)">
+        <path id="Path_14457" data-name="Path 14457" d="M200.842,101h-1.769V101a2.3,2.3,0,0,1-2.139-2.312,2.045,2.045,0,0,1,2.139-2.023V94.934a3.873,3.873,0,1,0,0,7.746v-.006h1.769a2.233,2.233,0,0,1,2.277,2.376v1.5h1.734v-1.9A3.837,3.837,0,0,0,200.842,101Z" transform="translate(-184.622 -91.524)" fill="#de2657"/>
+        <rect id="Rectangle_1994" data-name="Rectangle 1994" width="1.734" height="3.468" transform="translate(18.497 16.185)" fill="#de2657"/>
+        <rect id="Rectangle_1995" data-name="Rectangle 1995" width="17.341" height="3.468" transform="translate(0 16.185)" fill="#de2657"/>
+        <path id="Path_14458" data-name="Path 14458" d="M312.05,38.624A3.867,3.867,0,0,0,309.333,32v1.734a2.139,2.139,0,0,1,0,4.277v1.734a4.641,4.641,0,0,1,4.624,4.705v2.578h1.734V44.445A6.423,6.423,0,0,0,312.05,38.624Z" transform="translate(-292.57 -32)" fill="#de2657"/>
+        <rect id="Rectangle_1996" data-name="Rectangle 1996" width="1.734" height="3.468" transform="translate(21.387 16.185)" fill="#de2657"/>
+      </g>
+    </g>
+  </g>
+</svg>
