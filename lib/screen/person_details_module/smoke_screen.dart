@@ -1,21 +1,22 @@
 import 'package:dating/constant/color_constant.dart';
 import 'package:dating/constant/image_constant.dart';
 import 'package:dating/provider/app_provider/app_provider.dart';
+import 'package:dating/utils/local_list.dart';
 import 'package:dating/widgets/app_image_assets.dart';
 import 'package:dating/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SmokeScreen extends StatefulWidget {
-  const SmokeScreen({Key? key}) : super(key: key);
+  final bool isEdit;
+
+  const SmokeScreen({Key? key, this.isEdit = false}) : super(key: key);
 
   @override
   State<SmokeScreen> createState() => SmokeScreenState();
 }
 
 class SmokeScreenState extends State<SmokeScreen> {
-  List<String> smokeList = ['Yes', 'No', 'Planning to quit', 'Occasionally'];
-
   @override
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(
@@ -46,8 +47,12 @@ class SmokeScreenState extends State<SmokeScreen> {
                   ),
                   child: ListTile(
                     onTap: () {
-                      appProvider.changeSmoking(index);
-                      appProvider.userModel.smoke = smokeList[index];
+                      if (widget.isEdit) {
+                        Navigator.pop(context, smokeList[index]);
+                      } else {
+                        appProvider.changeSmoking(index);
+                        appProvider.userModel.smoke = smokeList[index];
+                      }
                     },
                     minLeadingWidth: 0,
                     minVerticalPadding: 0,

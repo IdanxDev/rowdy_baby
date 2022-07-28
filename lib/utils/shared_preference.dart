@@ -4,8 +4,9 @@ const String isLoggedIn = 'isLoggedIn';
 const String isProfileCompleted = 'isProfileCompleted';
 const String isPDCompleted = 'isPDCompleted';
 const String signInIndex = 'signInIndex';
+const String savedProfileData = 'savedProfileData';
 
-checkPrefKey(String key) async {
+Future<bool> checkPrefKey(String key) async {
   final prefs = await SharedPreferences.getInstance();
   return prefs.containsKey(key);
 }

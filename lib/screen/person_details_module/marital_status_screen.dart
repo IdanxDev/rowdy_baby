@@ -1,30 +1,22 @@
 import 'package:dating/constant/color_constant.dart';
 import 'package:dating/constant/image_constant.dart';
 import 'package:dating/provider/app_provider/app_provider.dart';
+import 'package:dating/utils/local_list.dart';
 import 'package:dating/widgets/app_image_assets.dart';
 import 'package:dating/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MaritalStatusScreen extends StatefulWidget {
-  const MaritalStatusScreen({Key? key}) : super(key: key);
+  final bool isEdit;
+
+  const MaritalStatusScreen({Key? key, this.isEdit = false}) : super(key: key);
 
   @override
   State<MaritalStatusScreen> createState() => MaritalStatusScreenState();
 }
 
 class MaritalStatusScreenState extends State<MaritalStatusScreen> {
-  List<String> maritalStatusList = <String>[
-    'Single',
-    'Single with Kids',
-    'Divorced',
-    'Divorced with Kids',
-    'Widowed',
-    'Widowed with Kids',
-    'Separated',
-    'Separated with Kids',
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(
@@ -54,9 +46,13 @@ class MaritalStatusScreenState extends State<MaritalStatusScreen> {
                   ),
                   child: ListTile(
                     onTap: () {
-                      appProvider.changeMaritalStatus(index);
-                      appProvider.userModel.maritalStatus =
-                          maritalStatusList[index];
+                      if (widget.isEdit) {
+                        Navigator.pop(context, maritalStatusList[index]);
+                      } else {
+                        appProvider.changeMaritalStatus(index);
+                        appProvider.userModel.maritalStatus =
+                            maritalStatusList[index];
+                      }
                     },
                     minLeadingWidth: 0,
                     minVerticalPadding: 0,

@@ -1,6 +1,6 @@
+import 'package:animated_shimmer/animated_shimmer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dating/constant/image_constant.dart';
-import 'package:dating/widgets/app_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -36,7 +36,10 @@ class AppImageAsset extends StatelessWidget {
             height: webHeight,
             width: webWidth,
             fit: webFit ?? BoxFit.cover,
-            placeholder: (context, url) => const AppLoader(),
+            placeholder: (context, url) => AnimatedShimmer(
+              height: webHeight ?? double.infinity,
+              width: webWidth ?? double.infinity,
+            ),
             errorWidget: (context, url, error) => const AppImageAsset(
               image: ImageConstant.userAvatar,
               fit: BoxFit.contain,

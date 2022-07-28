@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class JobScreen extends StatefulWidget {
-  const JobScreen({Key? key}) : super(key: key);
+  final bool isEdit;
+
+  const JobScreen({Key? key, this.isEdit = false}) : super(key: key);
 
   @override
   State<JobScreen> createState() => JobScreenState();

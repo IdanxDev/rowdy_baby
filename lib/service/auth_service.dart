@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:dating/model/user_model.dart';
+import 'package:dating/utils/shared_preference.dart';
 import 'package:dating/widgets/app_logs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +27,13 @@ class AuthService {
 
   //     ======================= SignOut =======================     //
   Future<void> userSignOut(BuildContext context) async {
+    await setPrefBoolValue(isLoggedIn, false);
+    await setPrefBoolValue(isProfileCompleted, false);
+    await setPrefBoolValue(isPDCompleted, false);
+    await setPrefStringValue(savedProfileData, '');
     await firebaseAuth.signOut();
     await googleSignIn.signOut();
+    await FacebookAuth.instance.logOut();
   }
 
   //     ======================= Google Sign In =======================     //

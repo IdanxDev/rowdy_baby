@@ -120,6 +120,24 @@ class BirthDayScreenState extends State<BirthDayScreen> {
                 ],
               ),
             ),
+            const SizedBox(height: 60),
+            if (appProvider.age != null)
+              RichText(
+                textAlign: TextAlign.center,
+                softWrap: true,
+                maxLines: 1,
+                text: TextSpan(
+                  text: 'Your just : ',
+                  style:
+                      const TextStyle(fontSize: 18, color: ColorConstant.white),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: '${appProvider.age}',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
           ],
         );
       },
@@ -138,10 +156,10 @@ class BirthDayScreenState extends State<BirthDayScreen> {
       builder: (context, child) {
         return Theme(
           data: ThemeData(
-            dialogBackgroundColor: ColorConstant.pink,
+            dialogBackgroundColor: ColorConstant.white,
             colorScheme: const ColorScheme.light(
-              primary: ColorConstant.yellow,
-              onSurface: ColorConstant.white,
+              primary: ColorConstant.pink,
+              onSurface: ColorConstant.black,
             ),
             fontFamily: AppTheme.defaultFont,
             dialogTheme: DialogTheme(
@@ -161,6 +179,7 @@ class BirthDayScreenState extends State<BirthDayScreen> {
       monthController.text = picked.month.toString();
       yearController.text = picked.year.toString();
       appProvider.userModel.age = picked.toIso8601String();
+      appProvider.age = (DateTime.now().year - picked.year).toString();
       appProvider.notifyListeners();
     }
   }

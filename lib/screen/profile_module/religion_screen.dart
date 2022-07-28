@@ -1,6 +1,7 @@
 import 'package:dating/constant/color_constant.dart';
 import 'package:dating/constant/image_constant.dart';
 import 'package:dating/provider/app_provider/app_provider.dart';
+import 'package:dating/utils/local_list.dart';
 import 'package:dating/widgets/app_image_assets.dart';
 import 'package:dating/widgets/app_text.dart';
 import 'package:dating/widgets/app_theme.dart';
@@ -8,7 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ReligionScreen extends StatefulWidget {
-  const ReligionScreen({Key? key}) : super(key: key);
+  final bool isEdit;
+
+  const ReligionScreen({Key? key, this.isEdit = false}) : super(key: key);
 
   @override
   State<ReligionScreen> createState() => ReligionScreenState();
@@ -16,23 +19,6 @@ class ReligionScreen extends StatefulWidget {
 
 class ReligionScreenState extends State<ReligionScreen> {
   final TextEditingController searchController = TextEditingController();
-  List<String> religionTypeList = [
-    'Christians',
-    'Muslims',
-    'Hindus',
-    'Chinese',
-    'Buddhists',
-    'Sikhs',
-    'Jains',
-    'Jews',
-    'Spiritists',
-    'Atheist',
-    'zoroastrians',
-    'Shintoists',
-    'Bha\'is',
-    'Neoreligionists',
-    'Ethnoreligionists'
-  ];
 
   List<String> tmpReligionTypeList = <String>[];
 
@@ -107,8 +93,12 @@ class ReligionScreenState extends State<ReligionScreen> {
                   ),
                   child: ListTile(
                     onTap: () {
-                      appProvider.changeReligion(index);
-                      appProvider.userModel.religion = religionTypeList[index];
+                      if (widget.isEdit) {
+                        Navigator.pop(context, religionTypeList[index]);
+                      } else {
+                        appProvider.changeReligion(index);
+                        appProvider.userModel.religion = religionTypeList[index];
+                      }
                     },
                     minLeadingWidth: 0,
                     minVerticalPadding: 0,
@@ -116,7 +106,7 @@ class ReligionScreenState extends State<ReligionScreen> {
                       text: religionTypeList[index],
                       fontSize: 20,
                       fontColor: appProvider.selectedRegion == index
-                          ? ColorConstant.yellow
+                          ? ColorConstant.lightYellow
                           : ColorConstant.white,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 0.6,

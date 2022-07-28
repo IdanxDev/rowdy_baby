@@ -4,6 +4,8 @@ import 'package:dating/constant/color_constant.dart';
 import 'package:dating/model/advance_filter_list_model.dart';
 import 'package:dating/model/multi_selection_model.dart';
 import 'package:dating/provider/filter_provider/filter_provider.dart';
+import 'package:dating/provider/home_provider/home_provider.dart';
+import 'package:dating/widgets/app_elevated_button.dart';
 import 'package:dating/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,11 +13,19 @@ import 'package:provider/provider.dart';
 class AppBottomSheet extends StatefulWidget {
   final int currentIndex;
   final AdvanceFilterListModel? filterSheetData;
+  final String? title;
+  final List<String>? sheetData;
+  final VoidCallback? onPressed;
+  final Expanded? buildBottomView;
 
   const AppBottomSheet({
     Key? key,
     this.currentIndex = 0,
-    @required this.filterSheetData,
+    this.filterSheetData,
+    this.title,
+    this.sheetData,
+    this.onPressed,
+    this.buildBottomView,
   }) : super(key: key);
 
   @override
@@ -33,9 +43,23 @@ class AppBottomSheetState extends State<AppBottomSheet> {
             body: Column(
               children: [
                 buildSheetBarrierView(context),
-                buildSheetView(context, filterProvider),
+                widget.buildBottomView != null
+                    ? widget.buildBottomView!
+                    : buildSheetView(context, filterProvider),
               ],
             ),
+            bottomNavigationBar: widget.title == 'Block & Report'
+                ? Container(
+                    color: ColorConstant.white,
+              padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: AppElevatedButton(
+                      text: 'Confirm Report & Block',
+                      height: 50,
+                      fontSize: 16,
+                      onPressed: widget.onPressed,
+                    ),
+                  )
+                : const SizedBox(),
           );
         },
       ),
@@ -51,12 +75,12 @@ class AppBottomSheetState extends State<AppBottomSheet> {
           left: 35,
           right: 25,
         ),
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
             topLeft: Radius.circular(28),
             topRight: Radius.circular(28),
           ),
-          border: Border.all(color: ColorConstant.grey),
+          // border: Border.all(color: ColorConstant.grey),
           color: ColorConstant.white,
         ),
         child: ListView(
@@ -66,7 +90,45 @@ class AppBottomSheetState extends State<AppBottomSheet> {
           children: [
             buildSheetAppBar(context),
             const SizedBox(height: 34),
-            buildSheetBody(filterProvider),
+            widget.filterSheetData == null
+                ? Consumer<HomeProvider>(
+                    builder: (context, provider, child) {
+                      return ListView.builder(
+                        primary: true,
+                        shrinkWrap: true,
+                        physics: const BouncingScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        itemCount: widget.sheetData!.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            onTap: () => provider.changeBlockReason(index),
+                            minLeadingWidth: 0,
+                            title: AppText(
+                              text: widget.sheetData![index],
+                              fontSize: 16,
+                              fontColor: provider.selectedBlockReason == index
+                                  ? ColorConstant.pink
+                                  : ColorConstant.black,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 0.6,
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  )
+                : buildSheetBody(filterProvider),
+            const SizedBox(height: 14),
+            // if (widget.filterSheetData == null)
+            //   AppElevatedButton(
+            //     text: 'Confirm Report & Block',
+            //     margin: 0,
+            //     height: 50,
+            //     fontSize: 16,
+            //     onPressed: widget.onPressed,
+            //   ),
+            // if (widget.filterSheetData == null) const SizedBox(height: 34),
           ],
         ),
       ),
@@ -140,7 +202,9 @@ class AppBottomSheetState extends State<AppBottomSheet> {
             Expanded(
               flex: 2,
               child: AppText(
-                text: widget.filterSheetData!.sheetTitle,
+                text: widget.filterSheetData == null
+                    ? widget.title
+                    : widget.filterSheetData!.sheetTitle,
                 fontColor: ColorConstant.black,
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
@@ -148,12 +212,14 @@ class AppBottomSheetState extends State<AppBottomSheet> {
               ),
             ),
             const Spacer(),
-            AppText(
-              text: 'done'.toUpperCase(),
-              fontColor: ColorConstant.pink,
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
+            widget.filterSheetData == null
+                ? Container()
+                : AppText(
+                    text: 'done'.toUpperCase(),
+                    fontColor: ColorConstant.pink,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
           ],
         ),
       ),
@@ -176,17 +242,17 @@ class AppBottomSheetState extends State<AppBottomSheet> {
   }
 
   void sortData(FilterProvider filterProvider, MultiSelectionModel sheetData) {
-    if (widget.currentIndex == 0) {
+    if (widget.currentIndex == 2) {
       filterProvider.addMaritalStatus(sheetData);
-    } else if (widget.currentIndex == 1) {
-      filterProvider.addSmokingStatus(sheetData);
-    } else if (widget.currentIndex == 2) {
-      filterProvider.addDrinkingStatus(sheetData);
     } else if (widget.currentIndex == 3) {
-      filterProvider.addEducationStatus(sheetData);
+      filterProvider.addSmokingStatus(sheetData);
     } else if (widget.currentIndex == 4) {
-      filterProvider.addLanguage(sheetData);
+      filterProvider.addDrinkingStatus(sheetData);
     } else if (widget.currentIndex == 5) {
+      filterProvider.addEducationStatus(sheetData);
+    } else if (widget.currentIndex == 6) {
+      filterProvider.addLanguage(sheetData);
+    } else if (widget.currentIndex == 7) {
       filterProvider.addUsageStatus(sheetData);
     }
   }

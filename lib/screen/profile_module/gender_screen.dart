@@ -1,21 +1,22 @@
 import 'package:dating/constant/color_constant.dart';
 import 'package:dating/constant/image_constant.dart';
 import 'package:dating/provider/app_provider/app_provider.dart';
+import 'package:dating/utils/local_list.dart';
 import 'package:dating/widgets/app_image_assets.dart';
 import 'package:dating/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class GenderScreen extends StatefulWidget {
-  const GenderScreen({Key? key}) : super(key: key);
+  final bool isEdit;
+
+  const GenderScreen({Key? key, this.isEdit = false}) : super(key: key);
 
   @override
   State<GenderScreen> createState() => GenderScreenState();
 }
 
 class GenderScreenState extends State<GenderScreen> {
-  List<String> gender = ['Male', 'Female', 'Others'];
-
   @override
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(
@@ -38,7 +39,7 @@ class GenderScreenState extends State<GenderScreen> {
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.symmetric(horizontal: 32),
-              itemCount: gender.length,
+              itemCount: genderList.length,
               itemBuilder: (context, index) {
                 return Card(
                   elevation: provider.selectedGender == index ? 4 : 0,
@@ -53,12 +54,16 @@ class GenderScreenState extends State<GenderScreen> {
                     height: 58,
                     child: ListTile(
                       onTap: () {
-                        provider.changeGender(index);
-                        provider.userModel.gender = gender[index];
+                        if (widget.isEdit) {
+                          Navigator.pop(context, genderList[index]);
+                        } else {
+                          provider.changeGender(index);
+                          provider.userModel.gender = genderList[index];
+                        }
                       },
                       minLeadingWidth: 0,
                       title: AppText(
-                        text: gender[index],
+                        text: genderList[index],
                         fontSize: 20,
                         fontColor: provider.selectedGender == index
                             ? ColorConstant.yellow

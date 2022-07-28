@@ -1,25 +1,22 @@
 import 'package:dating/constant/color_constant.dart';
 import 'package:dating/constant/image_constant.dart';
 import 'package:dating/provider/app_provider/app_provider.dart';
+import 'package:dating/utils/local_list.dart';
 import 'package:dating/widgets/app_image_assets.dart';
 import 'package:dating/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class InterestScreen extends StatefulWidget {
-  const InterestScreen({Key? key}) : super(key: key);
+  final bool isEdit;
+
+  const InterestScreen({Key? key, this.isEdit = false}) : super(key: key);
 
   @override
   State<InterestScreen> createState() => InterestScreenState();
 }
 
 class InterestScreenState extends State<InterestScreen> {
-  List<String> interestTypeList = [
-    'I\'m Interested in Men',
-    'I\'m Interested in women',
-    'I\'m Interested in everyone'
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(
@@ -56,8 +53,12 @@ class InterestScreenState extends State<InterestScreen> {
                     height: 58,
                     child: ListTile(
                       onTap: () {
-                        provider.changeInterest(index);
-                        provider.userModel.interest = interestTypeList[index];
+                        if (widget.isEdit) {
+                          Navigator.pop(context, interestTypeList[index]);
+                        } else {
+                          provider.changeInterest(index);
+                          provider.userModel.interest = interestTypeList[index];
+                        }
                       },
                       minLeadingWidth: 0,
                       minVerticalPadding: 0,

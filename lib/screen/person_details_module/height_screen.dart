@@ -1,62 +1,22 @@
 import 'package:dating/constant/color_constant.dart';
 import 'package:dating/constant/image_constant.dart';
 import 'package:dating/provider/app_provider/app_provider.dart';
+import 'package:dating/utils/local_list.dart';
 import 'package:dating/widgets/app_image_assets.dart';
 import 'package:dating/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class HeightScreen extends StatefulWidget {
-  const HeightScreen({Key? key}) : super(key: key);
+  final bool isEdit;
+
+  const HeightScreen({Key? key, this.isEdit = false}) : super(key: key);
 
   @override
   State<HeightScreen> createState() => HeightScreenState();
 }
 
 class HeightScreenState extends State<HeightScreen> {
-  List<String> heightList = [
-    '4\'1"',
-    '4\'2"',
-    '4\'3"',
-    '4\'4"',
-    '4\'5"',
-    '4\'6"',
-    '4\'7"',
-    '4\'8"',
-    '4\'9"',
-    '5\'0"',
-    '5\'1"',
-    '5\'2"',
-    '5\'3"',
-    '5\'4"',
-    '5\'5"',
-    '5\'6"',
-    '5\'7"',
-    '5\'8"',
-    '5\'9"',
-    '6\'0"',
-    '6\'1"',
-    '6\'2"',
-    '6\'3"',
-    '6\'4"',
-    '6\'5"',
-    '6\'6"',
-    '6\'7"',
-    '6\'8"',
-    '6\'9"',
-    '7\'0"',
-    '7\'1"',
-    '7\'2"',
-    '7\'3"',
-    '7\'4"',
-    '7\'5"',
-    '7\'6"',
-    '7\'7"',
-    '7\'8"',
-    '7\'9"',
-    '8\'0"',
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(
@@ -85,8 +45,12 @@ class HeightScreenState extends State<HeightScreen> {
                   ),
                   child: ListTile(
                     onTap: () {
-                      appProvider.changeHeight(index);
-                      appProvider.userModel.height = heightList[index];
+                      if (widget.isEdit) {
+                        Navigator.pop(context, heightList[index]);
+                      } else {
+                        appProvider.changeHeight(index);
+                        appProvider.userModel.height = heightList[index];
+                      }
                     },
                     minLeadingWidth: 0,
                     minVerticalPadding: 0,

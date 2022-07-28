@@ -4,8 +4,11 @@ import 'dart:async';
 
 import 'package:dating/constant/color_constant.dart';
 import 'package:dating/constant/image_constant.dart';
+import 'package:dating/model/user_model.dart';
 import 'package:dating/provider/app_provider/app_provider.dart';
+import 'package:dating/screen/home_screen/home_screen.dart';
 import 'package:dating/screen/profile_module/profile_screen.dart';
+import 'package:dating/service/user_service.dart';
 import 'package:dating/utils/shared_preference.dart';
 import 'package:dating/widgets/app_image_assets.dart';
 import 'package:dating/widgets/app_loader.dart';
@@ -47,6 +50,8 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
       letterSpacing: 0.48,
     ),
   );
+  UserService userService = UserService();
+  List<UserModel>? userModelList;
   bool isLoading = true;
 
   @override
@@ -54,7 +59,6 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
     super.initState();
     AppProvider appProvider = Provider.of<AppProvider>(context, listen: false);
     verifyOtp(appProvider);
-    counter();
   }
 
   @override
@@ -65,7 +69,7 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    logs('Current screen --> $runtimeType');
+    logs('Current screen --> ${runtimeType} : ${enableResend}');
     return WillPopScope(
       onWillPop: () async => true,
       child: Consumer<AppProvider>(
@@ -92,35 +96,33 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 10),
-                    RichText(
-                      text: TextSpan(
-                        text: '${secondsRemaining}sec ',
-                        style: const TextStyle(
-                          fontFamily: AppTheme.defaultFont,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        children: <TextSpan>[
-                          TextSpan(
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                // setState(() {
-                                //   secondsRemaining = 30;
-                                // });
-                                // counter();
-                                // verifyOtp(provider);
-                              },
+                    InkWell(
+                      onTap: () {
+                        if (enableResend) {
+                          timer!.cancel();
+                          verifyOtp(provider);
+                          secondsRemaining = 30;
+                          enableResend = false;
+                          setState(() {});
+                        }
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          AppText(
+                            text: '${secondsRemaining}sec ',
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          AppText(
                             text: enableResend ? 'Resend' : '',
-                            style: const TextStyle(
-                              color: ColorConstant.orange,
-                              decoration: TextDecoration.underline,
-                              decorationStyle: TextDecorationStyle.solid,
-                            ),
+                            fontSize: 18,
+                            fontColor: ColorConstant.lightYellow,
+                            decoration: TextDecoration.underline,
                           ),
                         ],
                       ),
-                      textAlign: TextAlign.center,
-                    )
+                    ),
                   ],
                 ),
                 isLoading ? const AppLoader() : const SizedBox(),
@@ -172,7 +174,7 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
               recognizer: TapGestureRecognizer()
                 ..onTap = () => Navigator.pop(context),
               style: const TextStyle(
-                color: ColorConstant.orange,
+                color: ColorConstant.lightYellow,
                 decoration: TextDecoration.underline,
                 decorationStyle: TextDecorationStyle.solid,
               ),
@@ -201,28 +203,7 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
       child: FloatingActionButton(
         backgroundColor: ColorConstant.white,
         elevation: 0,
-        onPressed: () async {
-          setState(() => isLoading = true);
-          PhoneAuthCredential phoneAuthCredential =
-              PhoneAuthProvider.credential(
-                  verificationId: verificationId!, smsCode: otpController.text);
-          UserCredential userCredential = await FirebaseAuth.instance
-              .signInWithCredential(phoneAuthCredential);
-          if (userCredential.user != null) {
-            provider.userModel.userId = userCredential.user!.uid;
-            provider.userModel.phoneNumber =
-                userCredential.user!.phoneNumber ?? '';
-            logs('Usermodel --> ${provider.userModel.toJson()}');
-            provider.userId = provider.userModel.userId!;
-            await setPrefBoolValue(isLoggedIn, true);
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const ProfileScreen()),
-              (route) => false,
-            );
-          }
-          setState(() => isLoading = false);
-        },
+        onPressed: () => validateOtp(provider),
         child: const AppImageAsset(
           image: ImageConstant.forwardArrowIcon,
           height: 20,
@@ -237,9 +218,9 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
       await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: appProvider.loginNumber!,
         verificationCompleted: (PhoneAuthCredential phoneAuthCredential) async {
-          UserCredential userCredential = await FirebaseAuth.instance
-              .signInWithCredential(phoneAuthCredential);
-          logs('User --> ${userCredential.user}');
+          // UserCredential userCredential = await FirebaseAuth.instance
+          //     .signInWithCredential(phoneAuthCredential);
+          // logs('User --> ${userCredential.user}');
         },
         verificationFailed: (FirebaseAuthException error) {
           if (error.code == 'invalid-phone-number') {
@@ -259,6 +240,7 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
             this.verificationId = verificationId;
             isLoading = false;
           });
+          counter();
           // PhoneAuthCredential phoneAuthCredential =
           //     PhoneAuthProvider.credential(
           //         verificationId: this.verificationId!, smsCode: '111111');
@@ -270,10 +252,10 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
           logs('VerifyId --> $verificationId');
           setState(() {
             this.verificationId = verificationId;
-            isLoading = false;
+            // isLoading = false;
           });
         },
-        timeout: const Duration(seconds: 120),
+        timeout: const Duration(seconds: 30),
       );
     } on FirebaseException catch (e) {
       logs('Catch error in Verify User : ${e.message}');
@@ -283,14 +265,71 @@ class OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
   void counter() {
     timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (secondsRemaining != 0 && !isLoading) {
+      if (secondsRemaining != 0) {
         secondsRemaining--;
       } else {
         enableResend = true;
       }
-      if (mounted) {
+      if (mounted && secondsRemaining >= 0) {
         setState(() {});
       }
     });
+  }
+
+  Future<void> getAllUsers(AppProvider provider) async {
+    userModelList = await userService.getAllUsers(context);
+    bool isOldUser = userModelList!
+        .any((element) => element.userId == provider.userModel.userId);
+    if (isOldUser) {
+      showMessage(
+        context,
+        message: 'Welcome back to Rowdy baby',
+      );
+      await setPrefBoolValue(isProfileCompleted, true);
+      await setPrefBoolValue(isPDCompleted, true);
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
+        (route) => false,
+      );
+    } else {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const ProfileScreen()),
+        (route) => false,
+      );
+    }
+  }
+
+  validateOtp(AppProvider provider) async {
+    if (otpController.text.isEmpty) {
+      showMessage(context, message: 'Please enter 6 digit otp', isError: true);
+    } else if (otpController.text.length != 6) {
+      showMessage(context,
+          message: 'Otp must contains 6 digits', isError: true);
+    } else {
+      setState(() => isLoading = true);
+      try {
+        PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
+            verificationId: verificationId!, smsCode: otpController.text);
+        UserCredential userCredential = await FirebaseAuth.instance
+            .signInWithCredential(phoneAuthCredential);
+        if (userCredential.user != null) {
+          await userService.deleteUser(context, currentUserId: userCredential.user!.uid);
+          provider.userModel.userId = userCredential.user!.uid;
+          provider.userModel.phoneNumber =
+              userCredential.user!.phoneNumber ?? '';
+          provider.userModel.emailAddress = userCredential.user!.email ?? '';
+          provider.userModel.logInType = 'phone';
+          logs('Usermodel --> ${provider.userModel.toJson()}');
+          provider.userId = provider.userModel.userId!;
+          await setPrefBoolValue(isLoggedIn, true);
+          await getAllUsers(provider);
+        }
+      } on FirebaseAuthException catch (e) {
+        showMessage(context, message: e.message, isError: true);
+      }
+      setState(() => isLoading = false);
+    }
   }
 }

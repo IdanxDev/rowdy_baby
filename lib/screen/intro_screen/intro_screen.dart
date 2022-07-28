@@ -27,13 +27,15 @@ class IntroScreenState extends State<IntroScreen> {
 
   List<IntroModel> introModelList = <IntroModel>[
     IntroModel(
-        image: ImageConstant.slider1,
-        header: 'Choose your partner in your ',
-        body: 'own caste'),
+      image: ImageConstant.slider1,
+      header: 'Choose your partner in your ',
+      body: 'own caste',
+    ),
     IntroModel(
-        image: ImageConstant.slider2,
-        header: 'Understanding each other makes ',
-        body: ' some time'),
+      image: ImageConstant.slider2,
+      header: 'Understanding each other makes ',
+      body: ' some time',
+    ),
     IntroModel(
       image: ImageConstant.slider3,
       header: 'Love . Date . ',
@@ -49,8 +51,11 @@ class IntroScreenState extends State<IntroScreen> {
       const Duration(seconds: 3),
       (Timer t) {
         appProvider.changeSlider();
-        pageViewController!.animateToPage(appProvider.currentIndex,
-            duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
+        pageViewController!.animateToPage(
+          appProvider.currentIndex,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeIn,
+        );
       },
     );
     super.initState();
@@ -128,7 +133,7 @@ class IntroScreenState extends State<IntroScreen> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: provider.currentIndex == index
-                ? ColorConstant.orange
+                ? ColorConstant.yellow
                 : ColorConstant.white,
           ),
         ),
@@ -146,7 +151,7 @@ class IntroScreenState extends State<IntroScreen> {
         );
       },
       text: 'Get started'.toUpperCase(),
-      textSize: 16,
+      fontSize: 16,
       margin: 36,
       borderRadius: 12,
       height: 50,

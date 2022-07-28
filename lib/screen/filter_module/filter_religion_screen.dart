@@ -131,7 +131,7 @@ class FilterReligionScreenState extends State<FilterReligionScreen> {
                         fontSize: 20,
                         fontColor: (religionList[0].isSelected ||
                                 religionList[index].isSelected)
-                            ? ColorConstant.yellow
+                            ? ColorConstant.lightYellow
                             : ColorConstant.white,
                         fontWeight: FontWeight.w600,
                         letterSpacing: 0.6,
@@ -142,7 +142,7 @@ class FilterReligionScreenState extends State<FilterReligionScreen> {
                         decoration: BoxDecoration(
                           color: (religionList[0].isSelected ||
                                   religionList[index].isSelected)
-                              ? ColorConstant.yellow
+                              ? ColorConstant.lightYellow
                               : ColorConstant.transparent,
                           borderRadius: BorderRadius.circular(4),
                           border: Border.all(

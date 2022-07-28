@@ -1,30 +1,22 @@
 import 'package:dating/constant/color_constant.dart';
 import 'package:dating/constant/image_constant.dart';
 import 'package:dating/provider/app_provider/app_provider.dart';
+import 'package:dating/utils/local_list.dart';
 import 'package:dating/widgets/app_image_assets.dart';
 import 'package:dating/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class EducationScreen extends StatefulWidget {
-  const EducationScreen({Key? key}) : super(key: key);
+  final bool isEdit;
+
+  const EducationScreen({Key? key, this.isEdit = false}) : super(key: key);
 
   @override
   State<EducationScreen> createState() => EducationScreenState();
 }
 
 class EducationScreenState extends State<EducationScreen> {
-  List<String> educationList = [
-    'Graduate degree',
-    'Undergraduate degree',
-    'In college',
-    'In grad school',
-    'High school',
-    'Vocational school',
-    'I\'m not study',
-    'Quit studies',
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(
@@ -55,8 +47,12 @@ class EducationScreenState extends State<EducationScreen> {
                   ),
                   child: ListTile(
                     onTap: () {
-                      appProvider.changeEducation(index);
-                      appProvider.userModel.education = educationList[index];
+                      if (widget.isEdit) {
+                        Navigator.pop(context, educationList[index]);
+                      } else {
+                        appProvider.changeEducation(index);
+                        appProvider.userModel.education = educationList[index];
+                      }
                     },
                     minLeadingWidth: 0,
                     minVerticalPadding: 0,

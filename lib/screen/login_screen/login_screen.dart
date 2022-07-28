@@ -4,10 +4,13 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:dating/constant/color_constant.dart';
 import 'package:dating/constant/image_constant.dart';
 import 'package:dating/constant/string_constant.dart';
+import 'package:dating/model/user_model.dart';
 import 'package:dating/provider/app_provider/app_provider.dart';
+import 'package:dating/screen/home_screen/home_screen.dart';
 import 'package:dating/screen/otp_verification_screen/otp_verification_screen.dart';
 import 'package:dating/screen/profile_module/profile_screen.dart';
 import 'package:dating/service/auth_service.dart';
+import 'package:dating/service/notification_service.dart';
 import 'package:dating/service/user_service.dart';
 import 'package:dating/utils/shared_preference.dart';
 import 'package:dating/widgets/app_image_assets.dart';
@@ -34,6 +37,8 @@ class LogInScreenState extends State<LogInScreen> {
   final TextEditingController numberController = TextEditingController();
   AuthService authService = AuthService();
   UserService userService = UserService();
+  NotificationService notificationService = NotificationService();
+  List<UserModel>? userModelList;
   bool isLoading = false;
 
   @override
@@ -243,19 +248,20 @@ class LogInScreenState extends State<LogInScreen> {
     UserCredential? userCredential =
         await authService.signInWithGoogle(context);
     if (userCredential != null) {
+      await userService.deleteUser(context, currentUserId: userCredential.user!.uid);
       provider.userModel.userId = userCredential.user!.uid;
       provider.userModel.userName = userCredential.user!.displayName;
       provider.userModel.phoneNumber = userCredential.user!.phoneNumber ?? '';
+      provider.userModel.emailAddress = userCredential.user!.email ?? '';
+      provider.userModel.logInType = 'social';
       logs('Usermodel --> ${provider.userModel.toJson()}');
       provider.userId = provider.userModel.userId!;
       provider.nameController.text = userCredential.user!.displayName!;
+      String? fcmToken = await NotificationService.generateFCMToken(context);
+      await userService.updateProfile(context,
+          currentUserId: provider.userId, key: 'fcmToken', value: fcmToken,showError: false);
       await setPrefBoolValue(isLoggedIn, true);
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const ProfileScreen()),
-        (route) => false,
-      );
-      Provider.of<AppProvider>(context, listen: false).selectedProfileIndex = 1;
+      await getAllUsers(provider);
     }
     setState(() => isLoading = false);
   }
@@ -265,20 +271,47 @@ class LogInScreenState extends State<LogInScreen> {
     UserCredential? userCredential =
         await authService.signInWithFacebook(context);
     if (userCredential != null) {
+      await userService.deleteUser(context, currentUserId: userCredential.user!.uid);
       provider.userModel.userId = userCredential.user!.uid;
       provider.userModel.userName = userCredential.user!.displayName;
       provider.userModel.phoneNumber = userCredential.user!.phoneNumber ?? '';
+      provider.userModel.emailAddress = userCredential.user!.email ?? '';
+      provider.userModel.logInType = 'social';
       logs('Usermodel --> ${provider.userModel.toJson()}');
       provider.userId = provider.userModel.userId!;
       provider.nameController.text = userCredential.user!.displayName!;
+      String? fcmToken = await NotificationService.generateFCMToken(context);
+      await userService.updateProfile(context,
+          currentUserId: provider.userId, key: 'fcmToken', value: fcmToken,showError: false);
       await setPrefBoolValue(isLoggedIn, true);
+      await getAllUsers(provider);
+    }
+    setState(() => isLoading = false);
+  }
+
+  Future<void> getAllUsers(AppProvider provider) async {
+    userModelList = await userService.getAllUsers(context, showError: false);
+    bool isOldUser = userModelList!
+        .any((element) => element.userId == provider.userModel.userId);
+    if (isOldUser) {
+      showMessage(
+        context,
+        message: 'Welcome back to Rowdy baby',
+      );
+      await setPrefBoolValue(isProfileCompleted, true);
+      await setPrefBoolValue(isPDCompleted, true);
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
+        (route) => false,
+      );
+    } else {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => const ProfileScreen()),
         (route) => false,
       );
-      Provider.of<AppProvider>(context, listen: false).selectedProfileIndex = 1;
+      provider.selectedProfileIndex = 1;
     }
-    setState(() => isLoading = false);
   }
 }

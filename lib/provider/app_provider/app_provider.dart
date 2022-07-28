@@ -1,8 +1,12 @@
 import 'package:dating/model/multi_selection_model.dart';
 import 'package:dating/model/user_model.dart';
+import 'package:dating/provider/disposable_provider/disposable_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
-class AppProvider extends ChangeNotifier {
+class AppProvider extends DisposableProvider {
+  bool isLoading = false;
+  bool isImageLoading = false;
   int currentIndex = 0;
   int selectedProfileIndex = 0;
   int selectedPersonalIndex = 0;
@@ -18,8 +22,11 @@ class AppProvider extends ChangeNotifier {
   int selectedEducation = -1;
   DateTime? birthDate;
   final TextEditingController nameController = TextEditingController();
+  final TextEditingController subCasteController = TextEditingController();
   final TextEditingController jobNameController = TextEditingController();
   final TextEditingController aboutMeController = TextEditingController();
+  final TextEditingController countryController = TextEditingController();
+  final TextEditingController cityController = TextEditingController();
   String? loginNumber;
   String userId = '';
   int aboutCharacter = 300;
@@ -28,6 +35,21 @@ class AppProvider extends ChangeNotifier {
   List<String> userPhotos = <String>['', '', '', '', '', ''];
   int bottomNavBarIndex = 0;
   UserModel userModel = UserModel();
+  List<String> likeType = [
+    'Liked by you',
+    'Rejected by you',
+    'See who liked you',
+  ];
+  int selectedLikeType = 2;
+  bool showClickedImage = false;
+  XFile? capturedImage;
+  bool cameraLoader = false;
+  String? age;
+
+  void addRemoveLoader(bool loader){
+    isImageLoading = loader;
+    notifyListeners();
+  }
 
   void changeSlider() {
     if (currentIndex != 2) {
@@ -112,5 +134,52 @@ class AppProvider extends ChangeNotifier {
   void changeEducation(int index) {
     selectedEducation = index;
     notifyListeners();
+  }
+
+  @override
+  void disposeAllValues() {
+    // TODO: implement disposeAllValues
+  }
+
+  @override
+  void disposeValues() {
+    isLoading = false;
+    currentIndex = 0;
+    selectedProfileIndex = 0;
+    selectedPersonalIndex = 0;
+    selectedGender = -1;
+    selectedInterest = -1;
+    selectedCast = -1;
+    selectedRegion = -1;
+    selectedUsageType = -1;
+    selectedHeight = -1;
+    selectedMaritalStatus = -1;
+    selectedSmokingType = -1;
+    selectedDrinking = -1;
+    selectedEducation = -1;
+    birthDate = null;
+    nameController.clear();
+    subCasteController.clear();
+    jobNameController.clear();
+    aboutMeController.clear();
+    countryController.clear();
+    cityController.clear();
+    loginNumber = null;
+    userId = '';
+    aboutCharacter = 300;
+    maxCharacter = 300;
+    selectedLanguage = <MultiSelectionModel>[];
+    userPhotos = <String>['', '', '', '', '', ''];
+    bottomNavBarIndex = 0;
+    likeType = [
+      'Liked by you',
+      'Rejected by you',
+      'See who liked you',
+    ];
+    selectedLikeType = 2;
+    showClickedImage = false;
+    capturedImage;
+    cameraLoader = false;
+    age = null;
   }
 }

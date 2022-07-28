@@ -17,4 +17,7 @@ class ColorConstant {
   static const Color dropShadow = Color(0XFFB5B5B5);
   static const Color hintColor = Color(0XFFEBEBEB);
   static const Color indicatorColor = Color(0XFFE7E7E7);
+  static const Color blue = Color(0XFF1289FF);
+  static const Color green = Color(0XFF11D832);
+  static const Color lightYellow = Color(0XFFfdbb0f);
 }

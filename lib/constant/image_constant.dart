@@ -11,6 +11,9 @@ class ImageConstant {
   static const slider1 = '${imagePath}slider1.png';
   static const slider2 = '${imagePath}slider2.png';
   static const slider3 = '${imagePath}slider3.png';
+  static const heartFullBack = '${imagePath}heart_full_back.jpg';
+  static const chatDefault = '${imagePath}chat_default.png';
+  static const likedBOtherDefault = '${imagePath}liked_by_other_default.svg';
 
   //     ======================= Icons =======================     //
   static const facebookIcon = '${iconPath}facebook.png';
@@ -39,7 +42,7 @@ class ImageConstant {
   static const circleBackIcon = '${iconPath}back_icon.png';
   static const passUserIcon = '${iconPath}pass_icon.svg';
   static const likeUserIcon = '${iconPath}like_icon.svg';
-  static const verifyBadge = '${iconPath}verify_badge.svg';
+  static const blueVerifyBadge = '${iconPath}verify_badge.svg';
   static const genderCardIcon = '${iconPath}gender_card.svg';
   static const birthdayCardIcon = '${iconPath}birthday_card.svg';
   static const heightCardIcon = '${iconPath}height_card.svg';
@@ -48,4 +51,20 @@ class ImageConstant {
   static const educationCard = '${iconPath}education_card.svg';
   static const jobCard = '${iconPath}job_card.svg';
   static const languageCard = '${iconPath}language_card.svg';
+  static const infoIcon = '${iconPath}info_icon.svg';
+  static const yellowVerifyIcon = '${iconPath}yellow_verify_badge.png';
+  static const yellowWalletIcon = '${iconPath}yellow_wallet.svg';
+  static const yellowShareIcon = '${iconPath}yellow_share.svg';
+  static const yellowHeartsIcon = '${iconPath}yellow_hearts.svg';
+  static const yellowQuestionIcon = '${iconPath}yellow_question.svg';
+  static const yellowCancelIcon = '${iconPath}yellow_cancel.svg';
+  static const logoutIcon = '${iconPath}logout_icon.svg';
+  static const pinkCheckIcon = '${iconPath}pink_check.svg';
+  static const whiteHeartIcon = '${iconPath}white_heart.svg';
+  static const redCloseIcon = '${iconPath}red_close.svg';
+  static const yellowCloseIcon = '${iconPath}yellow_close.svg';
+  static const backAndroidIcon = '${iconPath}back.png';
+  static const threeDotsIcon = '${iconPath}three_dots.svg';
+  static const chatPlusIcon = '${iconPath}chat_plus.svg';
+  static const chatSendIcon = '${iconPath}chat_send.svg';
 }

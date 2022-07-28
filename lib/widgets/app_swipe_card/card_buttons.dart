@@ -7,7 +7,7 @@ import 'package:swipable_stack/swipable_stack.dart';
 
 class CardButton extends StatelessWidget {
   final ValueChanged<SwipeDirection>? onSwipe;
-  final int? kmValue;
+  final String? kmValue;
 
   const CardButton({Key? key, @required this.onSwipe, this.kmValue})
       : super(key: key);
@@ -40,11 +40,12 @@ class CardButton extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            AppText(
-              text: '$kmValue km'.toUpperCase(),
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
+            if (kmValue != null && kmValue!.isNotEmpty)
+              AppText(
+                text: '$kmValue km'.toUpperCase(),
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
             const Spacer(),
             ElevatedButton(
               onPressed: () => onSwipe!(SwipeDirection.right),

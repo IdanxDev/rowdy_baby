@@ -1,26 +1,22 @@
 import 'package:dating/constant/color_constant.dart';
 import 'package:dating/constant/image_constant.dart';
 import 'package:dating/provider/app_provider/app_provider.dart';
+import 'package:dating/utils/local_list.dart';
 import 'package:dating/widgets/app_image_assets.dart';
 import 'package:dating/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class UsageTypeScreen extends StatefulWidget {
-  const UsageTypeScreen({Key? key}) : super(key: key);
+  final bool isEdit;
+
+  const UsageTypeScreen({Key? key, required this.isEdit}) : super(key: key);
 
   @override
   State<UsageTypeScreen> createState() => UsageTypeScreenState();
 }
 
 class UsageTypeScreenState extends State<UsageTypeScreen> {
-  List<String> usageTypeLists = [
-    'A Relationship or date',
-    'To get marry',
-    'I\'m not sure',
-    'Something Casual'
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(
@@ -57,8 +53,13 @@ class UsageTypeScreenState extends State<UsageTypeScreen> {
                     height: 58,
                     child: ListTile(
                       onTap: () {
-                        appProvider.changeUsageType(index);
-                        appProvider.userModel.usageType = usageTypeLists[index];
+                        if (widget.isEdit) {
+                          Navigator.pop(context, usageTypeLists[index]);
+                        } else {
+                          appProvider.changeUsageType(index);
+                          appProvider.userModel.usageType =
+                              usageTypeLists[index];
+                        }
                       },
                       minLeadingWidth: 0,
                       title: AppText(

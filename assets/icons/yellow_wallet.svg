@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="17.878" height="17.161" viewBox="0 0 17.878 17.161">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="1.138" y2="4.676" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#ff8e12"/>
+      <stop offset="1" stop-color="#ff6418"/>
+    </linearGradient>
+  </defs>
+  <g id="wallet-filled-money-tool" transform="translate(0 -17.84)">
+    <g id="Group_35860" data-name="Group 35860" transform="translate(0 17.84)">
+      <path id="Path_14513" data-name="Path 14513" d="M160.476,21.107l7.127-1.945-.377-.763a1,1,0,0,0-1.345-.454l-6.38,3.162Z" transform="translate(-156.298 -17.84)" fill="url(#linear-gradient)"/>
+      <path id="Path_14514" data-name="Path 14514" d="M329.053,86.46a1,1,0,0,0-.265.036l-1.674.458L322,88.349h8.334L330.02,87.2A1,1,0,0,0,329.053,86.46Z" transform="translate(-315.536 -85.082)" fill="url(#linear-gradient)"/>
+      <path id="Path_14515" data-name="Path 14515" d="M15.844,215.56H1.006a1.005,1.005,0,0,0-.97.741,1.039,1.039,0,0,0-.036.263v11.184a1,1,0,0,0,1,1H15.842a1,1,0,0,0,1-1v-2.8H10.889a1.708,1.708,0,0,1-1.706-1.706v-2.232a1.7,1.7,0,0,1,1.7-1.7h5.959v-2.74A1,1,0,0,0,15.844,215.56Z" transform="translate(0 -211.591)" fill="url(#linear-gradient)"/>
+      <path id="Path_14516" data-name="Path 14516" d="M500.065,437.024a1,1,0,0,0-.351-.209,1.023,1.023,0,0,0-.325-.054H493.4a1,1,0,0,0-1,1V440a1,1,0,0,0,1,1h5.985a1.024,1.024,0,0,0,.325-.054.974.974,0,0,0,.351-.209,1,1,0,0,0,.327-.741v-2.234A1,1,0,0,0,500.065,437.024Zm-4.565,2.058a.5.5,0,0,1-.5.5h-.333a.5.5,0,0,1-.5-.5v-.333a.492.492,0,0,1,.193-.393.507.507,0,0,1,.309-.108H495a.5.5,0,0,1,.5.5v.333Z" transform="translate(-482.515 -428.351)" fill="url(#linear-gradient)"/>
+    </g>
+  </g>
+</svg>

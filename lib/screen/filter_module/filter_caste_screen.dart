@@ -262,7 +262,7 @@ class FilterCastScreenState extends State<FilterCastScreen> {
                         fontSize: 20,
                         fontColor: (castTypeList[0].isSelected ||
                                 castTypeList[index].isSelected)
-                            ? ColorConstant.yellow
+                            ? ColorConstant.lightYellow
                             : ColorConstant.white,
                         fontWeight: FontWeight.w600,
                         letterSpacing: 0.6,
@@ -273,7 +273,7 @@ class FilterCastScreenState extends State<FilterCastScreen> {
                         decoration: BoxDecoration(
                           color: (castTypeList[0].isSelected ||
                                   castTypeList[index].isSelected)
-                              ? ColorConstant.yellow
+                              ? ColorConstant.lightYellow
                               : ColorConstant.transparent,
                           borderRadius: BorderRadius.circular(4),
                           border: Border.all(
