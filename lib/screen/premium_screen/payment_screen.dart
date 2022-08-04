@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
-
+import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:cashfree_pg/cashfree_pg.dart';
 import 'package:dating/constant/color_constant.dart';
 import 'package:dating/constant/image_constant.dart';
@@ -20,12 +21,95 @@ import 'package:provider/provider.dart';
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({Key? key}) : super(key: key);
-
   @override
   State<PaymentScreen> createState() => PaymentScreenState();
 }
 
+
+
+
+
+
 class PaymentScreenState extends State<PaymentScreen> {
+  late Razorpay _razorpay;
+
+void openCheckout(){
+   
+    var options = {
+      "key" : "rzp_test_IFyzDac9OMjjQY",
+      "amount" : 200 *100,
+      "name" : "Sample App",
+      "description" : "Payment for the some random product",
+      "prefill" : {
+        "contact" : "2323232323",
+        "email" : "shdjsdh@gmail.com"
+      },
+      "external" : {
+        "wallets" : ["paytm"]
+      }
+    };
+
+try{
+_razorpay.open(options);
+}catch(e){
+print(e.toString());
+}
+}
+
+void _handlePaymentSuccess(PaymentSuccessResponse response){
+    print("Pament success");
+  }
+
+void _handlePaymentError(PaymentFailureResponse response){
+    print("Pament error");
+}
+
+void _handleExternalWallet(ExternalWalletResponse response){
+    print("External Wallet");
+}
+
+@override
+void dispose(){
+  super.dispose();
+  _razorpay.clear();
+}
+
+@override
+void initState() {
+  super.initState();
+  _razorpay = Razorpay();
+  _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+  _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+  _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+}
+
+Future<void> _showMyDialog() async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Congratulations', style: TextStyle(fontWeight: FontWeight.bold,)),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: const <Widget>[
+              Text('Your in promotional period you no need take premium.'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Okay', style: TextStyle(color: Color(0xffDE2657) )),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
   @override
   Widget build(BuildContext context) {
     logs('Current screen --> $runtimeType');
@@ -44,6 +128,8 @@ class PaymentScreenState extends State<PaymentScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 36)
                         .copyWith(top: 30),
                     children: [
+                      buildPromotionalOffer(),
+                      SizedBox(height: 10),
                       buildFeaturesList(),
                       const SizedBox(height: 30),
                       ListView.separated(
@@ -124,9 +210,13 @@ class PaymentScreenState extends State<PaymentScreen> {
                         margin: 0,
                         height: 50,
                         fontSize: 16,
-                        onPressed: () => validatePayments(
-                            userProfileProvider, subscriptionProvider),
+                      //   onPressed: () => validatePayments(
+                      //       userProfileProvider, subscriptionProvider),
+                         onPressed: () => {
+                            _showMyDialog()
+                        },
                       ),
+                   
                     ],
                   ),
                 ),
@@ -165,6 +255,27 @@ class PaymentScreenState extends State<PaymentScreen> {
         ),
       ),
     );
+  }
+
+
+  SizedBox buildPromotionalOffer() {
+    return SizedBox(
+      child: DottedBorder(
+          radius: Radius.circular(4),
+          color: Color(0xffDE2657),
+          strokeWidth: 1,
+          child:       ListTile(
+        tileColor: Color(0xffFFF5F8),
+        leading: AppImageAsset(
+                          image: 'assets/images/party-popper.svg',
+                          height: 40,
+                        ),
+        title: Text('Congratulations', style: TextStyle(fontWeight: FontWeight.bold,)),
+        subtitle: Text('Your in promotional period you no need take premium.'),
+      ),
+           )
+
+     );
   }
 
   PreferredSize buildAppBar(BuildContext context) {

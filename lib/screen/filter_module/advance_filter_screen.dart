@@ -119,7 +119,8 @@ class AdvanceFilterScreenState extends State<AdvanceFilterScreen> {
                                   showMessage(context, message: 'Please select country first.!', isError: true);
                                 }
                               }
-                            } else {
+                            } 
+                            else {
                               Navigator.of(context).push(
                                 PageRouteBuilder(
                                   opaque: false,
