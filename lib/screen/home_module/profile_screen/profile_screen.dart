@@ -410,19 +410,19 @@ class MyProfileScreenState extends State<MyProfileScreen> {
   }
 
   void checkPremium(UserProfileProvider userProfileProvider) {
-    if (userProfileProvider.currentUserData!.isPremiumUser) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const PremiumMemberScreen()),
-      );
-    } else {
-      Navigator.of(context).push(
-        PageRouteBuilder(
-          opaque: false,
-          pageBuilder: (context, _, __) => const PaymentScreen(),
-        ),
-      );
-    }
+    // if (userProfileProvider.currentUserData!.isPremiumUser) {
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(builder: (context) => const PremiumMemberScreen()),
+    //   );
+    // } else {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (context, _, __) => const PaymentScreen(),
+      ),
+    );
+    // }
   }
 
   Future<void> getVerificationSelfie(String? currentUserId) async {

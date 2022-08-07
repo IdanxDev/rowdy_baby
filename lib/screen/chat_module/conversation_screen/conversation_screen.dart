@@ -308,6 +308,8 @@ class ConversationScreenState extends State<ConversationScreen> {
             focusNode: focusNode,
             cursorColor: ColorConstant.pink,
             textInputAction: TextInputAction.done,
+            maxLines: null,
+            // autofocus: false,
             onFieldSubmitted: (message) {
               if (message.trim().isNotEmpty) {
                 sendMessage(userProfileProvider, message);
@@ -325,7 +327,7 @@ class ConversationScreenState extends State<ConversationScreen> {
                 color: Color(0XFFA5A5A5),
                 letterSpacing: 0.48,
               ),
-              contentPadding: const EdgeInsets.fromLTRB(20, 0, 10, 0),
+              contentPadding: const EdgeInsets.fromLTRB(26, 6, 10, 6),
               filled: true,
               fillColor: ColorConstant.white,
               // fillColor: const Color(0XFFF2F2F2),

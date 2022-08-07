@@ -27,6 +27,7 @@ class UserProfileProvider extends DisposableProvider {
       interestGender = 1;
     }
     await getCurrentUserProfile(context);
+    await updateToPremiumUser(context);
   }
 
   Future<void> getCurrentUserProfile(BuildContext context) async {
@@ -36,6 +37,17 @@ class UserProfileProvider extends DisposableProvider {
     logs('User Profile --> ${currentUserProfile!.profilePercentage}');
     isLoading = false;
     notifyListeners();
+  }
+
+  Future<void> updateToPremiumUser(BuildContext context) async {
+    if (!currentUserData!.isPremiumUser) {
+      await userService.updateProfile(
+        context,
+        currentUserId: currentUserId,
+        key: 'isPremiumUser',
+        value: true,
+      );
+    }
   }
 
   @override

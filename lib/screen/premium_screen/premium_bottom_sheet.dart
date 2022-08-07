@@ -49,7 +49,8 @@ class PremiumBottomSheetState extends State<PremiumBottomSheet> {
                 height: 50,
                 fontSize: 16,
                 onPressed: () {
-                  validatePayments(userProfileProvider, subscriptionProvider);
+                  // validatePayments(userProfileProvider, subscriptionProvider);
+                  _showMyDialog();
                 },
               ),
             ),
@@ -397,5 +398,32 @@ class PremiumBottomSheetState extends State<PremiumBottomSheet> {
     } else {
       initializePayment(userProfileProvider, subscriptionProvider);
     }
+  }
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Congratulations', style: TextStyle(fontWeight: FontWeight.bold,)),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('Your in promotional period you no need take premium.'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Okay', style: TextStyle(color: Color(0xffDE2657) )),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
