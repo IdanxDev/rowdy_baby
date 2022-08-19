@@ -66,6 +66,14 @@
           }
         },
         {
+          "client_id": "966166200902-9a61agl8chdm81jupb95u52usrgq3jrm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.js.dating",
+            "certificate_hash": "536924ae493b9add83e4bcc75e48cbb208d161f3"
+          }
+        },
+        {
           "client_id": "966166200902-alj7krtihlcf5tofnq2rgf8em2j8uscr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -103,6 +111,14 @@
           "android_info": {
             "package_name": "com.js.dating",
             "certificate_hash": "1a22574fdfdb7cbadd11e59944574c5aa2b5d5f9"
+          }
+        },
+        {
+          "client_id": "966166200902-sq7nkj5586at8f4bv0c01al19vpb02qf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.js.dating",
+            "certificate_hash": "8857307c070ded7d98940dc36a44b5150b497abe"
           }
         },
         {

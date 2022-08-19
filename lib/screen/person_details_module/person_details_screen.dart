@@ -6,6 +6,7 @@ import 'package:dating/model/user_model.dart';
 import 'package:dating/provider/app_provider/app_provider.dart';
 import 'package:dating/provider/local_data_provider/local_data_provider.dart';
 import 'package:dating/screen/home_screen/home_screen.dart';
+import 'package:dating/screen/logIn_screen/login_screen.dart';
 import 'package:dating/screen/person_details_module/about_me_screen.dart';
 import 'package:dating/screen/person_details_module/city_screen.dart';
 import 'package:dating/screen/person_details_module/country_screen.dart';
@@ -17,6 +18,7 @@ import 'package:dating/screen/person_details_module/job_screen.dart';
 import 'package:dating/screen/person_details_module/language_screen.dart';
 import 'package:dating/screen/person_details_module/marital_status_screen.dart';
 import 'package:dating/screen/person_details_module/smoke_screen.dart';
+import 'package:dating/service/auth_service.dart';
 import 'package:dating/service/notification_service.dart';
 import 'package:dating/service/user_service.dart';
 import 'package:dating/utils/shared_preference.dart';
@@ -257,11 +259,21 @@ class PersonDetailsScreenState extends State<PersonDetailsScreen> {
     String? fcmToken = await NotificationService.generateFCMToken(context);
     appProvider.userModel.fcmToken = fcmToken;
     logs('appProvider --> ${appProvider.userModel.toJson()}');
-    await userService.createUser(context, appProvider.userModel);
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => const HomeScreen()),
-      (route) => false,
-    );
+    if (appProvider.userModel.userId != null && appProvider.userModel.userId!.isNotEmpty) {
+      await userService.createUser(context, appProvider.userModel);
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
+        (route) => false,
+      );
+    } else {
+      showMessage(context, message: 'Something went wrong please try again.!');
+      await AuthService().userSignOut(context);
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const LogInScreen()),
+        (route) => false,
+      );
+    }
   }
 }
