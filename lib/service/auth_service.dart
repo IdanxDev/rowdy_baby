@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:dating/model/user_model.dart';
+import 'package:dating/service/user_service.dart';
 import 'package:dating/utils/shared_preference.dart';
 import 'package:dating/widgets/app_logs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -31,6 +32,20 @@ class AuthService {
     await setPrefBoolValue(isProfileCompleted, false);
     await setPrefBoolValue(isPDCompleted, false);
     await setPrefStringValue(savedProfileData, '');
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+    logs('User id --> $userId');
+    await UserService().updateProfile(
+      context,
+      currentUserId: userId,
+      key: 'userStatus',
+      value: false,
+    );
+    await UserService().updateProfile(
+      context,
+      currentUserId: userId,
+      key: 'lastOnline',
+      value: DateTime.now().toIso8601String(),
+    );
     await firebaseAuth.signOut();
     await googleSignIn.signOut();
     await FacebookAuth.instance.logOut();

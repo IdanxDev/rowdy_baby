@@ -542,6 +542,11 @@ class UserService {
           'likedByOther': FieldValue.arrayRemove([likedByMe])
         },
       );
+      await userCollection.doc(currentUserId).update(
+        {
+          'acceptedLikesByOther': FieldValue.arrayUnion([likedByMe])
+        },
+      );
     } on FirebaseException catch (e) {
       showMessage(message: e.message, context, isError: true);
     }

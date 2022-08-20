@@ -44,6 +44,7 @@ class UserModel {
     this.likedByMe,
     this.rejectedByMe,
     this.likedByOther,
+    this.acceptedLikesByOther,
     this.chatByMe,
     this.isEdited = 0,
     this.fcmToken,
@@ -86,6 +87,7 @@ class UserModel {
   List<UserTimeModel>? likedByMe;
   List<UserTimeModel>? rejectedByMe;
   List<String>? likedByOther;
+  List<String>? acceptedLikesByOther;
   List<String>? chatByMe;
   num isEdited;
   String? fcmToken;
@@ -153,6 +155,9 @@ class UserModel {
         likedByOther: json["likedByOther"] == null
             ? null
             : List<String>.from(json["likedByOther"].map((x) => x)),
+    acceptedLikesByOther: json["acceptedLikesByOther"] == null
+            ? null
+            : List<String>.from(json["acceptedLikesByOther"].map((x) => x)),
         chatByMe: json["chatByMe"] == null
             ? null
             : List<String>.from(json["chatByMe"].map((x) => x)),
@@ -216,6 +221,9 @@ class UserModel {
         "likedByOther": likedByOther == null
             ? null
             : List<dynamic>.from(likedByOther!.map((x) => x)),
+        "acceptedLikesByOther": acceptedLikesByOther == null
+            ? null
+            : List<dynamic>.from(acceptedLikesByOther!.map((x) => x)),
         "chatByMe": chatByMe == null
             ? null
             : List<dynamic>.from(chatByMe!.map((x) => x)),

@@ -376,7 +376,8 @@ class ChatScreenState extends State<ChatScreen> {
     return Stack(
       children: [
         buildRowdyMatchAvatar(context),
-        SizedBox(
+        Container(
+          color: ColorConstant.themeScaffold,
           height: 120,
           child: ListView.separated(
             itemCount: userSnapshot.data!.docs.length,
@@ -389,7 +390,8 @@ class ChatScreenState extends State<ChatScreen> {
                   userSnapshot.data!.docs[index].data() as Map<String, dynamic>);
               if (userModel.userId == provider.currentUserId ||
                   !blockedUsers.contains(userModel.userId) ||
-                  !matchedUsers.contains(userModel.userId)) {
+                  !matchedUsers.contains(userModel.userId) ||
+                  !provider.currentUserData!.acceptedLikesByOther!.contains(userModel.userId)) {
                 return const SizedBox();
               }
               return GestureDetector(
@@ -443,7 +445,8 @@ class ChatScreenState extends State<ChatScreen> {
                   userSnapshot.data!.docs[index].data() as Map<String, dynamic>);
               if (userModel.userId == provider.currentUserId ||
                   !blockedUsers.contains(userModel.userId) ||
-                  !matchedUsers.contains(userModel.userId)) {
+                  !matchedUsers.contains(userModel.userId) ||
+                  !provider.currentUserData!.acceptedLikesByOther!.contains(userModel.userId)) {
                 return const SizedBox();
               }
 
