@@ -19,6 +19,7 @@ import 'package:dating/utils/shared_preference.dart';
 import 'package:dating/widgets/app_bottom_bar/app_bottom_bar.dart';
 import 'package:dating/widgets/app_image_assets.dart';
 import 'package:dating/widgets/app_logs.dart';
+import 'package:dating/widgets/app_text.dart';
 import 'package:dating/widgets/app_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -221,7 +222,8 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       value: fcmToken,
       showError: false,
     );
-    await getCurrentLocation(userProvider.currentUserId);
+    bool isGranted = await locationService.checkLocationPermission(context);
+    if (!isGranted) await getCurrentLocation(userProvider.currentUserId);
   }
 
   Future<void> sendDailyNotification(UserProfileProvider userProvider) async {
@@ -285,27 +287,106 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   }
 
   Future<void> getCurrentLocation(String? currentUserId) async {
-    bool isServiceEnable = await locationService.checkLocationService(context);
-    if (isServiceEnable) {
-      bool isGranted = await locationService.checkLocationPermission(context);
-      if (isGranted) {
-        Position? position = locationService.position;
-        if (position != null) {
-          logs('User id --> $currentUserId');
-          await userService.updateProfile(
-            context,
-            currentUserId: currentUserId,
-            key: 'location',
-            value: {
-              'latitude': position.latitude,
-              'longitude': position.longitude,
-            },
-          );
-        }
-      } else {
-        await GeolocatorPlatform.instance.requestPermission();
-        await getCurrentLocation(currentUserId);
-      }
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => AlertDialog(
+        title: const AppImageAsset(
+          image: 'assets/images/location.svg',
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            const AppText(
+              text: 'Turn on device location',
+              fontColor: ColorConstant.pink,
+              fontWeight: FontWeight.bold,
+              textAlign: TextAlign.center,
+              fontSize: 16,
+            ),
+            const SizedBox(height: 10),
+            const AppText(
+              text: 'We need your device location to show distances of each other',
+              fontColor: ColorConstant.black,
+              fontWeight: FontWeight.w500,
+              textAlign: TextAlign.center,
+              maxLines: 3,
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: Container(
+                    height: 40,
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      color: const Color(0xffEAE7E7),
+                    ),
+                    child: const AppText(
+                      text: 'Cancel',
+                      fontColor: ColorConstant.black,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                GestureDetector(
+                  onTap: () async {
+                    Navigator.pop(context);
+                    bool isServiceEnable = await locationService.checkLocationService(context);
+                    if (isServiceEnable) {
+                      bool isGranted = await locationService.checkLocationPermission(context);
+                      logs('message --> $isGranted');
+                      if (isGranted) {
+                        updatePosition(currentUserId);
+                      } else {
+                        await locationService.checkLocationPermission(context);
+                        await GeolocatorPlatform.instance.requestPermission();
+                        updatePosition(currentUserId);
+                      }
+                    }
+                  },
+                  child: Container(
+                    height: 40,
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      color: ColorConstant.pink,
+                    ),
+                    child: const AppText(
+                      text: 'Enable location',
+                      fontColor: ColorConstant.white,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> updatePosition(String? currentUserId) async {
+    Position? position = locationService.position;
+    if (position != null) {
+      logs('User id --> $currentUserId');
+      await userService.updateProfile(
+        context,
+        currentUserId: currentUserId,
+        key: 'location',
+        value: {
+          'latitude': position.latitude,
+          'longitude': position.longitude,
+        },
+      );
     }
   }
 }
